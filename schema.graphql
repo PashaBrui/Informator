@@ -1,0 +1,112 @@
+type Mutation{
+	telegram: TelegramMutation!
+}
+
+type TelegramMutation{
+	startBot: Boolean!
+	newChats(
+		ids: [String]
+	): Boolean!
+}
+
+type TelegramQuery{
+	getCookies: Boolean!
+	getChats(
+		regName: String
+	): [Chat!]
+	getChatsMessages(
+		input: [GetInfoInput!]!
+	): [Message!]
+	getChatContent(
+		input: GetInfoInput!
+	): [String!]
+	getMessagesFromManyChats(
+		daysAgo: Int
+		keyWords: [[String!]!]
+		keyWordsReg: Boolean
+		chats: [String!]
+		chatsReg: Boolean
+	): [Message!]
+	getMessagesByTags(
+		daysAgo: Int
+		keyWords: [[String!]!]
+		keyWordsReg: Boolean
+		collections: [String!]
+		collectionsReg: Boolean
+		chats: [String!]
+		chatsReg: Boolean
+	): [Message!]
+	getMessagesByTagsAndTopic(
+		daysAgo: Int
+		topic: [String!]!
+		keyWords: [[String!]!]
+		keyWordsReg: Boolean
+		collections: [String!]
+		collectionsReg: Boolean
+		chats: [String!]
+		chatsReg: Boolean
+	): [Message!]
+	getMessagesByTopic(
+		daysAgo: Int
+		topic: [String!]!
+		collections: [String!]
+		collectionsReg: Boolean
+		chats: [String!]
+		chatsReg: Boolean
+	): [Message!]
+}
+
+input GetInfoInput{
+	chat_id: [String]
+	regContentTags: [String]
+	regChatName: String!
+	chatsCount: Int
+	messageCount: Int
+	images: Boolean
+}
+
+type Message{
+	from: String!
+	from_id: String
+	text: String!
+	date: String
+	_id: String
+	chat_id: String
+	chat_name: String
+	message_thread_id: String
+	reply_to: String
+	photo: String
+	type: String
+}
+
+type Chat{
+	type: String
+	_id: String
+	username:String
+	name_id: String
+	name: String!
+	updateAt: String
+	messages: [Message!]
+}
+
+
+type Query{
+	telegram: TelegramQuery!
+}
+
+type ResponseWithUrls{
+	responseText: String
+	urls: [String!]
+}
+
+enum LoginType{
+	Login_with_Olx_password
+	Login_with_Google_account
+	Login_with_cookies_instead_password
+}
+
+
+schema{
+	query: Query
+	mutation: Mutation
+}
